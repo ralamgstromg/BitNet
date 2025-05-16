@@ -207,7 +207,7 @@ def main(args):
     setup_gguf()
     gen_code()
     compile()
-    if args["model_conversion"] == True:
+    if args.model_conversion == True:
         prepare_model()
     
 def parse_args():
