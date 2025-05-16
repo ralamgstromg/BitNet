@@ -203,11 +203,12 @@ def compile():
     # run_command(["cmake", "--build", "build", "--target", "llama-cli", "--config", "Release"])
     run_command(["cmake", "--build", "build", "--config", "Release"], log_step="compile")
 
-def main():
+def main(args):
     setup_gguf()
     gen_code()
     compile()
-    #prepare_model()
+    if args["model_conversion"] == True:
+        prepare_model()
     
 def parse_args():
     _, arch = system_info()
@@ -218,6 +219,7 @@ def parse_args():
     parser.add_argument("--quant-type", "-q", type=str, help="Quantization type", choices=SUPPORTED_QUANT_TYPES[arch], default="i2_s")
     parser.add_argument("--quant-embd", action="store_true", help="Quantize the embeddings to f16")
     parser.add_argument("--use-pretuned", "-p", action="store_true", help="Use the pretuned kernel parameters")
+    parser.add_argument("--model-conversion", "-c", action="store_true", help="Run the process with model conversion")
     return parser.parse_args()
 
 def signal_handler(sig, frame):
@@ -229,4 +231,4 @@ if __name__ == "__main__":
     args = parse_args()
     Path(args.log_dir).mkdir(parents=True, exist_ok=True)
     logging.basicConfig(level=logging.INFO)
-    main()
+    main(args)
