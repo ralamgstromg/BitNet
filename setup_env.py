@@ -207,7 +207,7 @@ def main():
     setup_gguf()
     gen_code()
     compile()
-    prepare_model()
+    #prepare_model()
     
 def parse_args():
     _, arch = system_info()
